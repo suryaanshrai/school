@@ -1,0 +1,12 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <title>School</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+</head>
+<body>
+    <img id="top" src="{% static 'home/img1.png' %}">
+    {% block body %}
+    {% endblock %}
+</body>
