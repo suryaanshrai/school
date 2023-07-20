@@ -34,7 +34,23 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
+        
+        usergroup = request.POST["usergroup"]
+        is_employee=False
+        if usergroup == "staff":
+            is_employee = True
+        if is_employee:
+            with open("student/emp_ids.txt", "r") as file:
+                if username+"\n" not in file:
+                    return render(request, "student/register.html", {
+                        "message":"Invalid ID"
+                    })
+        else:
+            with open("student/stud_ids.txt", "r") as file:
+                if username+"\n" not in file:
+                    return render(request, "student/register.html", {
+                        "message":"Invalid ID"
+                    })
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
@@ -49,6 +65,7 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             user.first_name = first_name
             user.last_name = last_name
+            user.is_employee = is_employee
             user.save()
         except IntegrityError:
             return render(
