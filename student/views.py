@@ -42,10 +42,13 @@ def register(request):
             return render(
                 request, "student/register.html", {"message": "Passwords must match."}
             )
-
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
+            user.first_name = first_name
+            user.last_name = last_name
             user.save()
         except IntegrityError:
             return render(
