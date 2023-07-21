@@ -1,36 +1,36 @@
-{% extends "student/layout.html" %}
-
+{% extends "home/layout.html" %}
+{% load static %}
 {% block body %}
 
-    <h2>Register</h2>
+    <center><h1>Register on the school website</h1></center>
+    <button class="registerButton" value="student">Register as student</button>
+    <button class="registerButton" value="staff">Register as staff</button>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+    <p id="message">{% if message %}{{message}}{% endif %}</p>
 
-    <form action="{% url 'student:register' %}" method="post">
+    <form action="{% url 'student:register' %}" id="studentForm" method="post" style="display:none">
         {% csrf_token %}
             <input type="hidden" name="usergroup" value="student">
-            <input type="text" name="username" placeholder="Student ID" required>
+            <input type="text" class="userid" name="username" placeholder="Student ID" required>
             <input type="text" name="first_name" placeholder="First name" required>
             <input type="text" name="last_name" placeholder="Last name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirmation" placeholder="Confirm Password" required>
-        <input class="btn btn-primary" type="submit" value="Register">
+            <input type="email" class="email" name="email" placeholder="Email Address" required>
+            <input type="password" class="password" name="password" placeholder="Password" required>
+            <input type="password" class="repassword" name="confirmation" placeholder="Confirm Password" required>
+        <input class="submitButton" type="submit" disabled value="Register">
     </form>
-    <p>Staff registration</p>
-    <form action="{% url 'student:register' %}" method="post">
+
+    <form action="{% url 'student:register' %}" id="staffForm" method="post" style="display:none">
         {% csrf_token %}
             <input type="hidden" name="usergroup" value="staff">
-            <input type="text" name="username" placeholder="Employee ID" required>
+            <input type="text" class="userid" name="username" placeholder="Employee ID" required>
             <input type="text" name="first_name" placeholder="First name" required>
             <input type="text" name="last_name" placeholder="Last name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirmation" placeholder="Confirm Password" required>
-        <input class="btn btn-primary" type="submit" value="Register">
+            <input type="email" class="email" name="email" placeholder="Email Address" required>
+            <input type="password" class="password" name="password" placeholder="Password" required>
+            <input type="password" class="repassword" name="confirmation" placeholder="Confirm Password" required>
+        <input class="submitButton" type="submit" disabled value="Register">
     </form>
     Already have an account? <a href="{% url 'student:login' %}">Log In here.</a>
-
+    <script src="{% static 'student/register.js' %}"></script>
 {% endblock %}

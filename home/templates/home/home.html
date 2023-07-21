@@ -1,0 +1,39 @@
+{% extends 'home/layout.html' %}
+{% load static %}
+
+{% block body %}
+<h1 id="heading">Welcome{% if user.is_authenticated %} {{user.first_name}}{% endif %}!</h1>
+    <div id="content">
+        <div id="content-body">
+            <p>Sainik School Ambikapur is one of the 24 Sainik Schools of India.
+                It is a purely residential school for boys. The medium of instruction is English.
+                Established by Government of India on 1st of September 2008 at Ambikapur. It is affiliated 
+                to Central Board of Secondary Education and is a member of Indian Public Schools Conference (IPSC).
+               The school prepares boys for entry into the National Defence Academy, Khadakwasla, Pune and for other walks of life.</p>
+               <p>The Sainik Schools are a system of schools in India conceived in 1961 by V. K. Krishna Menon, 
+               the then Defence Minister of India and established by the MoD under the aegis of the School Society
+                to rectify the regional and class imbalance amongst the Officer cadre of the Indian Armed Forces,
+                 by preparing students for entry into the National Defence Academy (NDA), Khadakwasla, Pune.</p>
+        </div>
+        <div id="news">
+            <h2>News and Updates:</h3>
+            Aliquam nulla facilisi cras fermentum. Convallis aenean et tortor at risus. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Proin fermentum leo vel orci. Nisl suscipit adipiscing bibendum est ultricies. Enim sit amet venenatis urna. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices. Accumsan sit amet nulla facilisi morbi tempus iaculis urna. Malesuada pellentesque elit eget gravida cum sociis natoque. Quis eleifend quam adipiscing vitae.
+        </div>
+    </div>
+    <nav id="menubar">
+        <div id="logo"><img alt="logo" src="{% static 'home/logo.png' %}"></div>
+        <li><a class="links" name="home">Home</a></li>
+        <li><a class="links" name="admission">Admission</a></li>
+        <li><a href="{% url 'home:gallery' %}" target="_blank">Gallery</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'student:logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'student:login' %}" target="_blank">Login</a></li>
+        <li><a href="{% url 'student:register' %}" target="_blank">Register</a></li>
+        {% endif %}
+        <li><a class="links" name="aim">Aim and Values</a></li>
+        <li><a class="links" name="history">History</a></li>
+    </nav>
+    <button id="sidebar"><img alt="menu" src="{% static 'home/menusymbol.svg' %}"><div>Menu</div></button>
+    <script src="{% static 'home/home.js' %}"></script>
+{% endblock %}

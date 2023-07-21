@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 from .models import User
 
 
@@ -15,7 +16,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponse(f"Logged in as {user.username}")
+            return HttpResponseRedirect(reverse("home:home"))
         else:
             return render(
                 request,
@@ -28,7 +29,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponse("Logged out.")
+    return HttpResponseRedirect(reverse("home:home"))
 
 def register(request):
     if request.method == "POST":
@@ -69,9 +70,24 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(
-                request, "student/register.html", {"message": "Username already taken."}
+                request, "student/register.html", {"message": "User already register."}
             )
         login(request, user)
-        return HttpResponse(f"Registered as {user.username}")
+        return HttpResponseRedirect(reverse("home:home"))
     else:
         return render(request, "student/register.html")
+
+
+def check_id(request, user_id):
+    if request.method == "GET":
+        with open("student/stud_ids.txt", "r") as S, open("student/emp_ids.txt","r") as E:
+            if user_id+'\n' in S or user_id+'\n' in E:
+                return JsonResponse({
+                    "is_valid":True
+                })
+        return JsonResponse({
+            "is_valid":False
+        })
+    return JsonResponse({
+        "message":"Invalid Request"
+    })
