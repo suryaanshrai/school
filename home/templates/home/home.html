@@ -27,6 +27,10 @@
         <li><a href="{% url 'home:gallery' %}" target="_blank">Gallery</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
+        <li><a href="{% url 'home:submissions' %}" target="_blank">
+            {% if user.is_employee %} Validate Submissions {% else %} Request a Submission {% endif %}
+        </a></li>
+        
         {% else %}
         <li><a href="{% url 'student:login' %}" target="_blank">Login</a></li>
         <li><a href="{% url 'student:register' %}" target="_blank">Register</a></li>
