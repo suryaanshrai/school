@@ -2,7 +2,46 @@
 {% load static %}
 {% block body %}
     {% if message %} <div class="alert alert-primary" role="alert" style="margin-top: 10px;">  {{message}} </div> {% endif %} 
-     <div>
+    {% if user.is_employee %}
+    <h2>Approve Student Submissions</h2>
+    <p>Note: These changes will be reflected on the website</p>
+    <div>
+        <center>
+        {% for sub in gallery_subs %}
+        <div>
+            <img src="{{sub.image.name|slice:"4:"}}" alt="{{sub.title}}" style="max-width: 60%;">
+            <p>Submitted by {{sub.author.first_name}} {{sub.author.last_name}}, {{sub.author.username}}</p>
+            <form action="{% url 'home:approve' %}" method="post">
+                {% csrf_token %}
+                {% if sub.event is None %}
+                <button>Create New Event</button>
+                {% else %}
+                Event: {{sub.event.event_name}}
+                {% endif %}
+                
+                <input type="hidden" name="sub_id" value="{{sub.id}}">
+                <input type="hidden" name="verdict" value="Approve">
+                <input type="button" value="Approve">
+            </form>
+            <form action="{% url 'home:approve' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="sub_id" value="{{sub.id}}">
+                <input type="submit" name="verdict" value="Reject">
+            </form>
+        </div>
+        {% endfor %}
+        </center>
+    </div>
+    <div>
+        <form action="{% url 'home:submissions' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="sub_type" value="event">
+            <input type="text" name="event_name" maxlength="150" placeholder="Event Name">
+            <input type="date" name="event_date">
+        </form>
+    </div>
+    {% else %}
+    <div>
         <form action="{% url 'home:submissions' %}" enctype="multipart/form-data" method="post">
             <h3>Submit a News Article</h3>
             {% csrf_token %}
@@ -19,17 +58,18 @@
             <h3>Submit an Image for the Gallery</h3>
             {% csrf_token %}
             <input type="hidden" name="sub_type" value="gallery">
-            <select name="Event" required>
+            <select name="event" required>
                 {% for event in events %}
                 <option value="{{event.id}}">{{event.event_name}}</option>
                 {% endfor %}
-                <option value="new_event">Other Event</option>
+                <option value="0">Other Event</option>
             </select>
             Upload the image
-            <input type="file" name="image" required max-file-size="1048"/>
+            <input type="file" name="image" required>
             <input type="text" name="title" placeholder="Title of your image (max:100 characters)" maxlength="100">
             <input type="submit">
         </form>
      </div>
+    {% endif %}
      <script src="{% static 'home/submissions.js' %}"
 {% endblock %}

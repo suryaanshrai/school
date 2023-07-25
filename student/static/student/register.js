@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function check_id(userid) {
     userid.addEventListener("change", () =>{
-            fetch(`student/check_id/${userid.value}`)
+            fetch(`/student/check_id/${userid.value}`)
             .then(response => response.json())
             .then(data => {
             if(!data.is_valid) {
-                document.querySelector("#message").innerHTML = "Invalid Student ID";
+                document.querySelector("#message").innerHTML = "Invalid ID";
                 cond1=false;
             }
             else {
@@ -109,7 +109,7 @@ function check_conds(input) {
                 button.disabled = true;
             });
         }
-        console.log(cond1, cond2, cond3, cond4);
+        // console.log(cond1, cond2, cond3, cond4);
     });
 }
 
@@ -148,7 +148,7 @@ function check_email(email) {
         })
         .then(response=>response.json())
         .then(data=> {
-            console.log(data);
+            // console.log(data);
             if (data.valid) {
                 document.querySelector("#message").innerHTML = "";
                 cond4 = true;
