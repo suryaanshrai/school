@@ -1,8 +1,32 @@
 {% extends 'home/layout.html' %}
 {% load static %}
 {% block body %}
-    <center><h1>Gallery</h1></center>
-    {% for gal_obj in gallery_subs %}
-    <img src=""
-    {% endfor %}
+
+    <h1>Gallery</h1>
+    {% if images is not None %}
+    <h3>{{event_name}}</h3>
+    <div>
+        {% for image in images %}
+        <div>
+            <img src="{{image.image.name|slice:"4:"}}" alt="{{image.title}}" style="max-width: 50%;">
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if gal_events is not None %}
+    <ul>
+        {% for event in gal_events %}
+        <li><a href="{% url 'home:view_event' event_id=event.id %}">{{event.event_name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if arch_events is not None %}
+    <h1>Archived</h1>
+    <ul>
+        {% for event in arch_events %}
+        <li><a href="{% url 'home:view_event' event_id=event.id %}">{{event.event_name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 {% endblock %}

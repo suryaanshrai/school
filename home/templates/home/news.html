@@ -1,5 +1,25 @@
 {% extends 'home/layout.html' %}
 {% load static %}
 {% block body %}
-    <center><h1>News and Updates</h1></center>
+    {% if news_subs is not None%}
+    <h1>News and Updates</h1>
+    <ul>
+        {% for news in news_subs %}
+        <li><a href="{% url 'home:news_article' news_id=news.id %}">{{news.title}}</a></li>
+        {% endfor %}   
+    </ul>
+    <h1>Archived News</h1>
+    <ul>
+        {% for news in archived_news %}
+            <li><a href="{% url 'home:news_article' news_id=news.id %}">{{news.title}}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if article %}
+    <h1>{{article.title}}</h1>
+    <p>Author: {{article.autho}}</p>
+    <p>Dated: {{article.date}} </p>
+    {% if article.image %}<img src="{{article.image.name|slice:"4:"}}">{% endif %}
+    <p>{{article.description}}</p>
+    {% endif %}
 {% endblock %}

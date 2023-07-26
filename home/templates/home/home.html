@@ -25,6 +25,7 @@
         <li><a class="links" name="home">Home</a></li>
         <li><a class="links" name="admission">Admission</a></li>
         <li><a href="{% url 'home:gallery' %}" target="_blank">Gallery</a></li>
+        <li><a href="{% url 'home:news' %}" target="_blank">News</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
         <li><a href="{% url 'home:submissions' %}" target="_blank">

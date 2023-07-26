@@ -10,6 +10,7 @@ body {
     width:100%;
 }
 
+/* Styling the menubar */
 #sidebar {
     background-color: black;
     border:none;
@@ -53,8 +54,8 @@ body {
     text-align: center;
     font-size: large;
     display:block;
-    padding: 14px;
-    width:4.5cm;
+    padding: 10px;
+    width:6cm;
 }
 
 #logo {
@@ -128,4 +129,77 @@ a:hover {
 
 .appear {
     animation: fade 1s reverse;
+}
+
+/* Styling the submissions portal */
+
+.pages {
+    border:1px solid gray;
+    border-collapse: collapse;
+    border-radius: 1cm;
+    display: none;
+    margin: 2cm;
+    padding: 20px;
+    text-align: center;
+}
+
+.pages * {
+    margin:10px;
+}
+
+.pages input {
+    width:40%;
+}
+
+.pages textarea {
+    height: 12.5cm;
+    width:50%;
+}
+.pages select {
+    width:40%;
+}
+
+@keyframes slideinnarrow {
+    0% {
+        opacity: 0;
+        margin-left:70%;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 10px;
+    }
+}
+
+@keyframes slideinwide {
+    0% {
+        opacity: 0;
+        margin-left:70%;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 2cm;
+    }
+}
+
+.slideinanim {
+    animation:slideinwide 1s;
+}
+
+@media (max-width:700px) {
+    .pages {
+        width:95%;
+        margin:10px;
+    }
+    .pages textarea {
+        width: 90%;
+    }
+    .pages input {
+        width:80%;
+    }
+    .pages select {
+        width:80%;
+    }
+    .slideinanim {
+        animation: slideinnarrow 1s;
+    }
 }

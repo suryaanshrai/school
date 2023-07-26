@@ -1,75 +1,134 @@
 {% extends 'home/layout.html' %}
 {% load static %}
 {% block body %}
+
+<!-- This Page performs four functions:
+1. Submit a request for a photograph for the gallery
+2. Submit a request for a news article
+3. Allow employees to approve or reject these requests 
+4. Create a new event for the gallery structure -->
+
     {% if message %} <div class="alert alert-primary" role="alert" style="margin-top: 10px;">  {{message}} </div> {% endif %} 
+    <button class="pageButton" value="1">Submit a News Article</button>
+    <button class="pageButton" value="2">Submit an Image for Gallery</button>
     {% if user.is_employee %}
-    <h2>Approve Student Submissions</h2>
-    <p>Note: These changes will be reflected on the website</p>
-    <div>
-        <center>
+    <button class="pageButton" value="3">Review News Articles</button>
+    <button class="pageButton" value="4">Reviews Images for Gallery</button>
+    <button class="pageButton" value="5">Create a new Event</button>
+    {% endif %}
+    <!-- Create a new request for a News article -->
+    <div class="pages" id="page1">
+        <form action="{% url 'home:submissions' %}" enctype="multipart/form-data" method="post">
+            <h3>Submit a News Article</h3>
+            {% csrf_token %}
+            <input type="hidden" name="sub_type" value="news">
+            <p>Title:<input type="text" name="title" placeholder="Title (max:100 characters)" maxlength="100" required></p>
+            <p>Date: <input type="date" name="date" required></p>
+            <p>Upload an image (optional):<input type="file" name="image"></p>
+            <p><textarea name="description" placeholder="Describe the news (max:3750 characters)" maxlength="3750" required></textarea></p>
+            <p><input type="submit"></p>
+        </form>
+    </div>
+
+    <!-- Create a new Request for an image for the gallery -->
+    <div class="pages" id="page2">
+        <form action="{% url 'home:submissions' %}" enctype="multipart/form-data" method="post">
+            <h3>Submit an Image for the Gallery</h3>
+            {% csrf_token %}
+            <input type="hidden" name="sub_type" value="gallery">
+            <p>
+            <select name="event" required>
+                <option value="0">Other Event</option>
+                {% for event in events %}
+                <option value="{{event.id}}">{{event.event_name}}</option>
+                {% endfor %}
+            </select>
+            </p>
+            <p>Upload the image: <input type="file" name="image" required></p>
+            <p><input type="text" name="title" placeholder="Title of your image (max:100 characters)" maxlength="100"></p>
+            <p><input type="submit"></p>
+        </form>
+     </div>
+     
+     {% if user.is_employee %}
+    <!-- News articles to be approved or rejected  -->
+    <div class="pages" id="page3">
+        <h3>News Submissions:</h3>
+        {% for news in news_subs %}
+        <div>
+            <h4>{{news.title}} </h4>
+            <p>Author:{{news.author}}</p>
+            <p>Dated:{{news.date}} </p>
+            {% if news.image %}
+                <img src="{{news.image.name|slice:"4:"}}" style="max-width: 50%;">
+            {% endif %}
+            <div>
+                {{news.description}}
+            </div>
+            <form action="{% url 'home:approve' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="sub_type" value="news">
+                <input type="hidden" name="sub_id" value="{{news.id}}">
+                <input type="submit" name="verdict" value="Approve">
+            </form>
+            <form action="{% url 'home:approve' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="sub_type" value="news">
+                <input type="hidden" name="sub_id" value="{{news.id}}">
+                <input type="submit" name="verdict" value="Reject">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Gallery Submission to be approved or rejected  -->
+    <div class="pages" id="page4">
+        <h3>Gallery Submissions:</h3>
         {% for sub in gallery_subs %}
         <div>
             <img src="{{sub.image.name|slice:"4:"}}" alt="{{sub.title}}" style="max-width: 60%;">
             <p>Submitted by {{sub.author.first_name}} {{sub.author.last_name}}, {{sub.author.username}}</p>
             <form action="{% url 'home:approve' %}" method="post">
                 {% csrf_token %}
-                {% if sub.event is None %}
-                <button>Create New Event</button>
-                {% else %}
-                Event: {{sub.event.event_name}}
-                {% endif %}
-                
+                <input type="hidden" name="sub_type" value="gallery">
                 <input type="hidden" name="sub_id" value="{{sub.id}}">
-                <input type="hidden" name="verdict" value="Approve">
-                <input type="button" value="Approve">
+                Select Event:
+                <select name="event">
+                    {% if sub.event is None %} 
+                    <option value="0">New Event</option>  
+                    {% else %}
+                    <option value="{{sub.event.id}}"> {{sub.event.event_name}}</option>
+                    {% endif %}
+                    {% for event in events %} 
+                    {% if sub.event is not None and event.id != sub.event.id %}
+                    <option value="{{event.id}}">{{event.event_name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" name="verdict" value="Approve">
             </form>
             <form action="{% url 'home:approve' %}" method="post">
                 {% csrf_token %}
+                <input type="hidden" name="sub_type" value="gallery">
                 <input type="hidden" name="sub_id" value="{{sub.id}}">
                 <input type="submit" name="verdict" value="Reject">
             </form>
         </div>
         {% endfor %}
-        </center>
     </div>
-    <div>
+
+    <!-- Create a new event -->
+    <div class="pages" id="page5">
+        <h3>Create a New Event:</h3>
         <form action="{% url 'home:submissions' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="sub_type" value="event">
-            <input type="text" name="event_name" maxlength="150" placeholder="Event Name">
-            <input type="date" name="event_date">
+            <p><input type="text" name="event_name" maxlength="150" placeholder="Event Name"></p>
+            <p><input type="date" name="event_date"></p>
+            <p><input type="submit"> </p>
         </form>
     </div>
-    {% else %}
-    <div>
-        <form action="{% url 'home:submissions' %}" enctype="multipart/form-data" method="post">
-            <h3>Submit a News Article</h3>
-            {% csrf_token %}
-            <input type="hidden" name="sub_type" value="news">
-            <input type="text" name="title" placeholder="Title (max:100 characters)" maxlength="100" required>
-            <input type="date" name="date" required>
-            Upload an image (optional):
-            <input type="file" name="image">
-            <textarea name="description" placeholder="Describe the news (max:3750 characters)" maxlength="3750" required></textarea>
-            <input type="submit">
-        </form>
-
-        <form action="{% url 'home:submissions' %}" enctype="multipart/form-data" method="post">
-            <h3>Submit an Image for the Gallery</h3>
-            {% csrf_token %}
-            <input type="hidden" name="sub_type" value="gallery">
-            <select name="event" required>
-                {% for event in events %}
-                <option value="{{event.id}}">{{event.event_name}}</option>
-                {% endfor %}
-                <option value="0">Other Event</option>
-            </select>
-            Upload the image
-            <input type="file" name="image" required>
-            <input type="text" name="title" placeholder="Title of your image (max:100 characters)" maxlength="100">
-            <input type="submit">
-        </form>
-     </div>
     {% endif %}
-     <script src="{% static 'home/submissions.js' %}"
+
+     <script src="{% static 'home/submissions.js' %}"></script>
+     
 {% endblock %}

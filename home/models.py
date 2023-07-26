@@ -9,6 +9,7 @@ class News(models.Model):
     # 3750 characters provide a word limit of nearly 750 words assuming a char length of 5 for each word and ignoring spaces
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="approver")
+    active = models.BooleanField(default=False)
 
     def delete(self, *args, **kwargs):
        if self.image is not None:
@@ -20,6 +21,7 @@ class News(models.Model):
 class Event(models.Model):
     event_name = models.CharField(max_length=150)
     date = models.DateField(blank=True, null=True)
+    active = models.BooleanField(default=False)
 
 
 class Gallery(models.Model):
@@ -28,12 +30,7 @@ class Gallery(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE,blank=True,null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
     approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="approved_by")
-    
+
     def delete(self, *args, **kwargs):
        self.image.delete()
        super().delete(*args, **kwargs)
-
-
-class ActiveSession(models.Model):
-    news = models.ForeignKey(News,on_delete=models.CASCADE, blank=True, null=True)
-    events = models.ForeignKey(Event, on_delete=models.CASCADE, blank=True, null=True)
