@@ -1,0 +1,41 @@
+
+.heading {
+    margin:1cm;
+    margin-top: 5cm;
+    text-align: center;
+    text-decoration: underline;
+}
+
+#home_grid {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    margin-top:0px;
+}
+
+.home_content {
+    background-color: #FFFDD0;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: large;
+    margin:2cm;
+    margin-top:0px;
+    outline:1px solid black;
+    padding: 20px;
+    padding-top:10px;
+}
+
+@media (max-width:700px) {
+    #home_grid {
+        grid-template-columns: 100%;
+    }
+    .heading {
+        margin-top:4cm;
+        margin-bottom: 1cm;
+        margin-left: 10px;
+        margin-right: 10px;;
+    }
+    .home_content {
+        margin-left: 10px;
+        margin-right: 10px;;
+    }
+}

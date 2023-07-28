@@ -1,10 +1,14 @@
 {% extends 'home/layout.html' %}
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'home/home.css' %}"
+{% endblock %}
+
 {% block body %}
-<h1 id="heading">Welcome{% if user.is_authenticated %} {{user.first_name}}{% endif %}!</h1>
-    <div id="content">
-        <div id="content-body">
+<h1 class="heading" id="welcome" style="margin-top: 10px;">Welcome{% if user.is_authenticated %} {{user.first_name}}{% endif %}!</h1>
+    <div id="home_grid">
+        <div class="home_content" style="margin-right: 10px;">
             <p>Sainik School Ambikapur is one of the 24 Sainik Schools of India.
                 It is a purely residential school for boys. The medium of instruction is English.
                 Established by Government of India on 1st of September 2008 at Ambikapur. It is affiliated 
@@ -15,30 +19,59 @@
                 to rectify the regional and class imbalance amongst the Officer cadre of the Indian Armed Forces,
                  by preparing students for entry into the National Defence Academy (NDA), Khadakwasla, Pune.</p>
         </div>
-        <div id="news">
-            <h2>News and Updates:</h3>
-            Aliquam nulla facilisi cras fermentum. Convallis aenean et tortor at risus. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Proin fermentum leo vel orci. Nisl suscipit adipiscing bibendum est ultricies. Enim sit amet venenatis urna. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices. Accumsan sit amet nulla facilisi morbi tempus iaculis urna. Malesuada pellentesque elit eget gravida cum sociis natoque. Quis eleifend quam adipiscing vitae.
+        <div class="home_content" style="margin-left: 10px;">
+            <h3 style="text-decoration: underline;">News and Updates:</h3>
+            <ul>
+                {% for news in news_articles %}
+                <li><a href="{% url 'home:news_article' news_id=news.id %}">{{news.title}}</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
-    <nav id="menubar">
-        <div id="logo"><img alt="logo" src="{% static 'home/logo.png' %}"></div>
-        <li><a class="links" name="home">Home</a></li>
-        <li><a class="links" name="admission">Admission</a></li>
-        <li><a href="{% url 'home:gallery' %}" target="_blank">Gallery</a></li>
-        <li><a href="{% url 'home:news' %}" target="_blank">News</a></li>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'student:logout' %}">Logout</a></li>
-        <li><a href="{% url 'home:submissions' %}" target="_blank">
-            {% if user.is_employee %} Validate Submissions {% else %} Request a Submission {% endif %}
-        </a></li>
-        
-        {% else %}
-        <li><a href="{% url 'student:login' %}">Login</a></li>
-        <li><a href="{% url 'student:register' %}">Register</a></li>
-        {% endif %}
-        <li><a class="links" name="aim">Aim and Values</a></li>
-        <li><a class="links" name="history">History</a></li>
-    </nav>
-    <button id="sidebar"><img alt="menu" src="{% static 'home/menusymbol.svg' %}"><div>Menu</div></button>
-    <script src="{% static 'home/home.js' %}"></script>
+<h1 class="heading" id="admissions">Admissions</h1>
+<div class="home_content">
+    Admission is made once in a year in Class VI/IX only through ALL INDIA SAINIK SCHOOL ENTRANCE EXAMINATION
+ which is held on the first Sunday of January every year. The Admission Notice will be published in the advertisements in the
+  leading newspapers in the month of September (generally third/fourth week). Applications for admission are available online 
+  in the link <a href="http://sainikschooladmission.in/index.html">http://sainikschooladmission.in/index.html</a>.<p>AGE LIMIT</p>
+  <ul><li>For admission to Class VI, boy should not be less than 10 years and more than 12 years on 31 March.</li>
+<li>For admission to Class IX, boy should not be less than 13 years and more than 15 years on 31 March.</li></ul><p>VACANCIES</p>
+The likely number of vacancies this academic year is 95 for Class VI and 08 for Class IX. However, the number can be changed due 
+to policy/administrative reasons.
+</div>
+<h1 class="heading" id="aimandvalues">Aim and Values</h1>
+<div class="home_content">
+    The scheme to establish Sainik Schools was introduced in 1961 with the primary aim of preparing boys academically, 
+    physically and mentally for entry into the National Defence Academy and other Defence Academies. <p> Inculcating the following OLQs
+    (Officer Like Qualities) is a big part of the training:<ol><p>Factor – I (Planning and Organising):</p><li>Effective Intelligence</li><li>Reasoning Ability</li>
+    <li>Organising Ability</li><li>Power of Expression</li><p>Factor – II (Social Adjustment)</p><li>Social Adaptability</li><li>Co-operation</li><li>Sense of Responsibility
+    </li><p>Factor – III (Social Effectiveness)</p><li>Initiative</li><li>Self Confidence</li><li>Speed of Decision</li><li>Ability to Influence the Group</li>
+    <li>Liveliness</li><p>Factor – IV (Dynamic)</p><li>Determination</li><li>Courage</li><li>Stamina</li></ol>
+</div>
+<h1 class="heading" id="history">History</h1>
+<div class="home_content">
+    <p>The first decade after independence was a traumatic one. The wounds of partition,
+        communal holocaust, resettlement of millions of refugees, integration of the five hundred and odd 
+        native states, the clamour of linguistic reorganization – these were but a few of the daunting
+         problems. The compulsive hostility of Pakistan, souring of the once friendly ties with China, 
+         turbulence in the North-East and a vast coastline highlighted the necessity of a nationally 
+         representative, sizeable and well-equipped Army, Navy and Air-Force.</p> <p>Prior to the Government
+          of India Act of 1935 and the acute demands of World War II, the officer cadre of our armed forces
+           was not open to our countrymen. Rare exceptions were granted to the scions of royalty and blue
+            blood. Analysis of then existing officer cadre revealed a disturbing trend. It remained a monopoly
+             of the so-called martial races and regions and alumni of the highly expensive and elitist public
+              schools beyond the reach of all but a few. In short, our defence forces lacked a truly all-India
+               image, character and ethos. The Indian Military Academy was in existence, therefore the setting up
+                of the National Defence Academy (NDA) at Khadakvasla was but a logical step. The high levels of
+                 physical, mental and intellectual attainments needed for induction into the officer cadre could
+                  not be nurtured in the common schools mainly because of the lack of infrastructural facilities.
+                   A laissez-faire policy to leave it to the already existing, posh public schools would have been
+                    grossly unfair to the bright young children all over the country, for whom education in a
+                     public school was nothing but a dream. All these reasons prompted the then Defence Minister 
+                     Shri V K Krishna Menon to envisage a chain of Sainik Schools with at least one in each State to
+                      serve as feeders to the NDA. Further, they would act as role models and influence other schools
+                       by their example and performance towards a paradigm shift in objectives of school education, as
+                        in the pre-independence years and to some extent even today, our education system is 
+                        syllabus-examination oriented and not aimed at all-round development and enhancement of competitive skills.</p>
+</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'home/layout.html' %}
 {% load static %}
 {% block body %}
+<div style="margin-left: 15px; margin-top: 15px;">
     {% if news_subs is not None%}
     <h1>News and Updates</h1>
     <ul>
@@ -9,6 +10,9 @@
         {% endfor %}   
     </ul>
     <h1>Archived News</h1>
+    {% if archived_news|length == 0 %}
+    No arhived News
+    {% endif %}
     <ul>
         {% for news in archived_news %}
             <li><a href="{% url 'home:news_article' news_id=news.id %}">{{news.title}}</a></li>
@@ -16,10 +20,13 @@
     </ul>
     {% endif %}
     {% if article %}
-    <h1>{{article.title}}</h1>
-    <p>Author: {{article.autho}}</p>
+    <div class="news_page">
+        <h1>{{article.title}}</h1>
+    <p id="author_name">Author: {{article.author.first_name}} {{article.author.last_name}}, {{article.author}}</p>
     <p>Dated: {{article.date}} </p>
     {% if article.image %}<img src="{{article.image.name|slice:"4:"}}">{% endif %}
-    <p>{{article.description}}</p>
+    <p id="news_description">{{article.description}}</p>
+    </div>
     {% endif %}
+</div>
 {% endblock %}

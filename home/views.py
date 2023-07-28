@@ -10,7 +10,10 @@ from django.utils import dateparse
 from datetime import datetime
 
 def home(request):
-    return render(request, "home/home.html")
+    news_articles = News.objects.filter(active=True).order_by('-date')[:5]
+    return render(request, "home/home.html", {
+        "news_articles":news_articles
+    })
 
 
 @login_required
@@ -34,7 +37,7 @@ def submissions(request):
         
     gallery_subs=Gallery.objects.filter(approved_by=None)
     news_subs = News.objects.filter(approved_by=None)
-    event_list = Event.objects.all()
+    event_list = Event.objects.filter(active=True).order_by('-date')
     return render(request, "home/submissions.html", {
         "message":"",
         "events":event_list,

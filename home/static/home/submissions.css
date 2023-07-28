@@ -1,0 +1,118 @@
+
+/* Styling the submissions portal */
+
+.pages {
+    border:1px solid gray;
+    border-collapse: collapse;
+    border-radius: 1cm;
+    display: none;
+    margin: 2cm;
+    padding: 20px;
+    text-align: center;
+}
+
+.pages * {
+    margin:10px;
+}
+
+.pages input {
+    width:40%;
+}
+
+.pages textarea {
+    height: 12.5cm;
+    width:50%;
+}
+.pages select {
+    width:40%;
+}
+
+.article_grid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    text-align: center;
+}
+
+.article_grid > div {
+    display:block;
+    border:1px solid black;
+    margin:10px;
+    padding:10px;
+    text-align:center;
+}
+
+
+@keyframes slideinnarrow {
+    0% {
+        opacity: 0;
+        margin-left:70%;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 10px;
+    }
+}
+
+@keyframes slideinwide {
+    0% {
+        opacity: 0;
+        margin-left:70%;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 2cm;
+    }
+}
+
+.slideinanim {
+    animation:slideinwide 1s;
+}
+
+@media (max-width:700px) {
+    .pages {
+        width:95%;
+        margin:10px;
+    }
+    .pages textarea {
+        width: 100%;
+        margin-left: 0;
+    }
+    .pages input {
+        width:80%;
+    }
+    .pages select {
+        width:80%;
+    }
+    .slideinanim {
+        animation: slideinnarrow 1s;
+    }
+}
+
+#top-rack {
+    text-align: center;
+}
+#top-rack > button {
+    margin: 5px;
+    border-radius: 10px;
+    border-width: 1px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#top-rack > button:hover {
+    cursor: pointer;
+}
+#top-rack > button:focus {
+    font-weight: bold;
+}
+
+@media (max-width:700px) {
+    #top-rack {
+        display: grid;
+        grid-template-columns: 100%;
+    }
+    #top-rack > button {
+        width:90%;
+        margin-left:5%;
+        margin-top: 10px;
+    }
+}

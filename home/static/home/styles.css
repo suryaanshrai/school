@@ -78,128 +78,41 @@ body {
     text-decoration: underline;
 }
 
-#heading {
-    font-size: 48px;
-    margin:1cm;
-    text-align: center;
-    text-decoration: underline;
-}
-#content {
-    display: grid;
-    grid-template-columns: 60% 40%;
-    margin:3cm;
-    margin-top:0px;
-}
-
-#content div {
-    background-color: #FFFDD0;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: large;
-    margin:10px;
-    margin-top:0px;
-    outline:1px solid black;
-    padding: 20px;
-    padding-top:10px;
-}
-
-@media (max-width:700px) {
-    #content {
-        grid-template-columns: 90%;
-        margin:10px;
-    }
-}
 
 a:hover {
     cursor: pointer;
 }
 
-@keyframes fade {
-    0% {
-        opacity: 100%;;
-    }
-    100% {
-        opacity: 0%;
-    }
-}
 
-.fadeaway {
-    animation: fade 1s forwards;
-}
+/* css for the news and gallery pages */
 
-.appear {
-    animation: fade 1s reverse;
-}
-
-/* Styling the submissions portal */
-
-.pages {
-    border:1px solid gray;
-    border-collapse: collapse;
-    border-radius: 1cm;
-    display: none;
-    margin: 2cm;
-    padding: 20px;
+.news_page  {
     text-align: center;
 }
-
-.pages * {
-    margin:10px;
+.news_page > h1 {
+    text-decoration: underline;
 }
-
-.pages input {
-    width:40%;
+.news_page img {
+    max-height: 15cm;max-width: 100%;
 }
-
-.pages textarea {
-    height: 12.5cm;
-    width:50%;
+#author_name {
+    font-weight: bold;
+    font-size: 18px;
 }
-.pages select {
-    width:40%;
-}
-
-@keyframes slideinnarrow {
-    0% {
-        opacity: 0;
-        margin-left:70%;
-    }
-    100% {
-        opacity: 1;
-        margin-left: 10px;
-    }
-}
-
-@keyframes slideinwide {
-    0% {
-        opacity: 0;
-        margin-left:70%;
-    }
-    100% {
-        opacity: 1;
-        margin-left: 2cm;
-    }
-}
-
-.slideinanim {
-    animation:slideinwide 1s;
+#news_description {
+    outline:1px solid black;
+    border-radius: 1cm; 
+    display:inline-block;
+    font-size: 24px; 
+    margin:1cm; 
+    padding: 10px; 
+    width:75%;
 }
 
 @media (max-width:700px) {
-    .pages {
-        width:95%;
-        margin:10px;
-    }
-    .pages textarea {
+    #news_description {
         width: 90%;
-    }
-    .pages input {
-        width:80%;
-    }
-    .pages select {
-        width:80%;
-    }
-    .slideinanim {
-        animation: slideinnarrow 1s;
+        margin: 10px;
+        font-size: 18px;
     }
 }
