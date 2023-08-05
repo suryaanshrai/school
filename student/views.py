@@ -1,9 +1,10 @@
-from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User
+from .models import User, Result, Schedule, Classroom, Notice
 
 
 def login_view(request):
@@ -90,4 +91,36 @@ def check_id(request, user_id):
         })
     return JsonResponse({
         "message":"Invalid Request"
+    })
+
+
+@login_required
+def index(request):
+    return render(request, "student/index.html")
+
+@login_required
+def results(request):
+    user = User.objects.get(username=request.user)
+    all_result = list(Result.objects.filter(student=user).values())
+    return JsonResponse({
+        "result":all_result
+    })
+
+@login_required
+def schedule(request):
+    user = User.objects.get(username=request.user)
+    schedule = list(Schedule.objects.filter(user=user).values())
+    for item in schedule:
+        item["due_date"] = item["due_date"].strftime("%d %b %Y at %H:%M %p")
+    return JsonResponse({
+        "schedule":schedule
+    })
+
+@login_required
+def notices(request):
+    user = User.objects.get(username=request.user)
+    userclass_room = Classroom.objects.get(member=user)
+    notices = list(Notice.objects.filter(issued_for=userclass_room).values())
+    return JsonResponse({
+        "notices":notices
     })

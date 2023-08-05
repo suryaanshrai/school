@@ -15,6 +15,9 @@ class News(models.Model):
        if self.image is not None:
         self.image.delete()
        super().delete(*args, **kwargs)
+    
+    def __str__(self):
+       return f"{self.title}"
 
 
 
@@ -22,7 +25,9 @@ class Event(models.Model):
     event_name = models.CharField(max_length=150)
     date = models.DateField(blank=True, null=True)
     active = models.BooleanField(default=False)
-
+    
+    def __str__(self):
+       return f"{self.event_name}"
 
 class Gallery(models.Model):
     image = models.ImageField(upload_to="home/static/home/gallery")
@@ -34,3 +39,6 @@ class Gallery(models.Model):
     def delete(self, *args, **kwargs):
        self.image.delete()
        super().delete(*args, **kwargs)
+    
+    def __str__(self):
+       return f"{self.event.event_name}"

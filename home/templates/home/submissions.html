@@ -112,13 +112,14 @@
                     Select Event:
                     <p>
                     <select name="event">
-                        {% if sub.event is None %} 
-                        <option value="0">New Event</option>  
+                        {% if sub.event is None %}
+                        <option value="0">New Event</option>
                         {% else %}
                         <option value="{{sub.event.id}}"> {{sub.event.event_name}}</option>
                         {% endif %}
                         {% for event in events %} 
-                        {% if sub.event is not None and event.id != sub.event.id %}
+                        {% if event == sub.event %}
+                        {% else %}
                         <option value="{{event.id}}">{{event.event_name}}</option>
                         {% endif %}
                         {% endfor %}
