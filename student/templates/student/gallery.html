@@ -1,0 +1,27 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    body {
+        margin:1cm;
+        padding: 1cm;
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'home/submissions.css' %}"
+{% endblock %}
+
+{% block body %}
+<h2>Your Gallery Submissions</h2>
+<ul>
+<div class="article_grid">
+    {% for item in gallery %}
+    <div>
+        <img src="{{item.image.name|slice:"4:"}}" alt="{{item.title}}" style="max-width: 100%; max-height: 10cm;">
+        <p>{{item.event.event_name}}</p>
+    </div>
+    {% endfor %}
+</div>
+</ul>
+{% endblock %}

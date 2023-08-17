@@ -18,17 +18,17 @@
         <li><a href="/#admissions">Admissions</a></li>
         <li><a href="{% url 'home:gallery' %}">Gallery</a></li>
         <li><a href="{% url 'home:news' %}">News</a></li>
+        <li><a href="/#aimandvalues">Aim and Values</a></li>
+        <li><a href="/#history">History</a></li>
         {% if user.is_authenticated %}
-        <li><a href="{% url 'student:logout' %}">Logout</a></li>
+        <li><a href="{% url 'student:index' %}">Student Page</a></li>
         <li><a href="{% url 'home:submissions' %}">
             {% if user.is_employee %} Request/Review Submissions {% else %} Request Submission {% endif %}
         </a></li>
-        
+        <li><a href="{% url 'student:logout' %}">Logout</a></li>
         {% else %}
         <li><a href="{% url 'student:login' %}">Login/Register</a></li>
         {% endif %}
-        <li><a href="/#aimandvalues">Aim and Values</a></li>
-        <li><a href="/#history">History</a></li>
     </nav>
     <button id="sidebar"><img alt="menu" src="{% static 'home/menusymbol.svg' %}"><div>Menu</div></button>
     <script src="{% static 'home/home.js' %}"></script> 

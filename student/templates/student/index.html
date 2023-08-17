@@ -1,5 +1,44 @@
 {% extends 'student/layout.html' %}
 {% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'student/index.css' %}">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+{% endblock %}
+
 {% block body %}
-THIS WORKS TOO!
+    <div class="homeBody">
+        <div>
+            Due Dates/Schedule
+            <ul>
+                {% for item in schedule %}
+                <li>{{item.activity}} due at: {{item.due_date}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <div>
+                Notices
+                <ul>
+                    {% for item in notices %}
+                    <li>{{item.title}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                Results
+                <ul>
+                    {% for item in results %}
+                    <li>Scored {{item.marks}} out of {{item.max_marks}} in {{item.topic}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="App"></div>
+    <script src="{% static 'student/app.js' %}" type="text/babel"></script> 
 {% endblock %}

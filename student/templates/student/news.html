@@ -1,0 +1,22 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+{% block head %}
+<style>
+    body {
+        margin:1cm;
+        padding: 1cm;
+        text-align: center;
+    }
+    li {
+        list-style-type: none;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<h2>Your news articles</h2>
+<ul>
+{% for item in news %}
+    <li><a href="{% url 'home:news_article' news_id=item.id %}">{{item.title}}</a> </li>
+{% endfor %}
+</ul>
+{% endblock %}

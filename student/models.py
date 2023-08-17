@@ -33,15 +33,19 @@ def validate_section(value):
         )
 
 class Classroom(models.Model):
-    member = models.ForeignKey(User, on_delete=models.CASCADE)
     standard = models.IntegerField(validators=[
         MaxValueValidator(12),
         MinValueValidator(6)
     ])
     section = models.CharField(max_length=1, validators=[validate_section])
-    
+
     def __str__(self):
-        return f"{self.member} in {self.standard} {self.section}"
+        return f"{self.standard} {self.section}"
+
+
+class Member(models.Model):
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
 class Notice(models.Model):
     issued_for = models.ForeignKey(Classroom, on_delete=models.CASCADE)

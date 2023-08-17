@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Result, Schedule, Classroom, Notice
+from .models import User, Result, Schedule, Classroom, Notice, Member
+from home.models import Gallery, News
 
 
 def login_view(request):
@@ -96,12 +97,22 @@ def check_id(request, user_id):
 
 @login_required
 def index(request):
-    return render(request, "student/index.html")
+    schedule = list(Schedule.objects.filter(user=request.user).order_by("-due_date").values())
+    schedule = schedule[:5]
+    user_classroom = Member.objects.get(member=request.user).classroom
+    notices = list(Notice.objects.filter(issued_for=user_classroom).order_by("-issue_date").values())
+    results = list(Result.objects.filter(student=request.user).order_by("-date").values())
+    return render(request, "student/index.html", {
+        "schedule":schedule,
+        "notices":notices,
+        "results":results,
+    })
 
 @login_required
 def results(request):
     user = User.objects.get(username=request.user)
     all_result = list(Result.objects.filter(student=user).values())
+    all_result.reverse()
     return JsonResponse({
         "result":all_result
     })
@@ -119,8 +130,22 @@ def schedule(request):
 @login_required
 def notices(request):
     user = User.objects.get(username=request.user)
-    userclass_room = Classroom.objects.get(member=user)
+    userclass_room = Classroom.objects.get(id=Member.objects.get(member=user).classroom_id)
     notices = list(Notice.objects.filter(issued_for=userclass_room).values())
     return JsonResponse({
         "notices":notices
+    })
+
+@login_required
+def user_news(request):
+    news=News.objects.filter(author=request.user).order_by("-id")
+    return render(request, "student/news.html", {
+        "news":news
+    })
+
+@login_required
+def user_gallery(request):
+    gallery=Gallery.objects.filter(author=request.user).order_by("-id")
+    return render(request, "student/gallery.html", {
+        "gallery":gallery
     })
