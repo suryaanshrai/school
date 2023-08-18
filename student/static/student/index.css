@@ -26,3 +26,21 @@
 .hide {
     display: none;
 }
+#App {
+    margin:3cm;
+}
+@media (max-width:700px) {
+    .homeBody {
+        display: grid;
+        grid-template-columns: 100%;
+        margin:0px;
+        margin-top: 2cm;
+    }
+    .homeBody > div {
+        margin-bottom: 2cm;
+    }
+    #App {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}

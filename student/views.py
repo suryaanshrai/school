@@ -131,7 +131,7 @@ def schedule(request):
 def notices(request):
     user = User.objects.get(username=request.user)
     userclass_room = Classroom.objects.get(id=Member.objects.get(member=user).classroom_id)
-    notices = list(Notice.objects.filter(issued_for=userclass_room).values())
+    notices = list(Notice.objects.filter(issued_for=userclass_room).order_by("-id").values())
     return JsonResponse({
         "notices":notices
     })
@@ -149,3 +149,18 @@ def user_gallery(request):
     return render(request, "student/gallery.html", {
         "gallery":gallery
     })
+
+@login_required
+def notice_page(request, notice_id):
+    notice=Notice.objects.get(id=notice_id)
+    return render(request, "student/notice_page.html", {
+        "notice":notice,
+    })
+
+@login_required
+def add_schedule(request):
+    if request.method == "POST":
+        new_task=Schedule(user=request.user, activity=request.POST["task"], due_date=request.POST["due_date"])
+        new_task.save()
+        return HttpResponseRedirect(reverse("student:index"))
+    return render(request, "student/schedule.html")

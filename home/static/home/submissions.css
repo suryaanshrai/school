@@ -41,6 +41,11 @@
     text-align:center;
 }
 
+@media (max-width:700px) {
+    .article_grid {
+        grid-template-columns: 100%
+    }
+}
 
 @keyframes slideinnarrow {
     0% {

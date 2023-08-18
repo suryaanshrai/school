@@ -25,7 +25,7 @@
                 Notices
                 <ul>
                     {% for item in notices %}
-                    <li>{{item.title}}</li>
+                    <li> <a href="{% url 'student:notice_page' notice_id=item.id %}" target="_blank">{{item.title}}</a> </li>
                     {% endfor %}
                 </ul>
             </div>

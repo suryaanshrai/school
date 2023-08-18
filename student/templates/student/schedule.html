@@ -1,0 +1,44 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    #myform {
+        text-align: center;
+        margin:3cm;
+    }
+    #myform > form {
+        display: inline-block;
+        width: 50%;
+    }
+    @media (max-width:700px) {
+        #myform {
+        text-align: center;
+        margin-top:3cm;
+        margin-bottom: 3cm;
+        margin-left:10px;
+        margin-right:10px;
+    }
+    #myform > form {
+        display: inline-block;
+        width: 90%;
+    }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="myform">
+    <form action="{% url 'student:add_schedule' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus autocomplete="off" class="form-control" type="text" name="task" placeholder="New Task" required>
+        </div>
+        <div class="form-group">
+            <input autofocus class="form-control" type="datetime-local" name="due_date" required>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Add New Task">
+    </form>
+</div>
+
+{% endblock %}

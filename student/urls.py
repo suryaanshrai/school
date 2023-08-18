@@ -15,4 +15,6 @@ urlpatterns = [
     path("notices", views.notices, name="notices"),
     path("user_news", views.user_news, name="user_news"),
     path("user_gallery", views.user_gallery, name="user_gallery"),
+    path("notice_page/<int:notice_id>", views.notice_page, name="notice_page"),
+    path("add_schedule", views.add_schedule, name="add_schedule"),
 ]
