@@ -6,7 +6,8 @@
 }
 
 .homeBody > div {
-    border:1px solid black;
+    border:1px dashed black;
+    background-color:ivory;
     margin:1cm;
     padding:.5cm;
 }
@@ -29,6 +30,21 @@
 #App {
     margin:3cm;
 }
+.button_panel {
+    text-align: center;
+}
+
+.button_panel button {
+    margin:10px;
+    margin-bottom: 20px;
+    border:1px solid gray;
+    border-radius: 10px;
+    background-color:aliceblue;
+}
+.button_panel button:hover {
+    outline:1px solid black;
+    cursor: pointer;
+}
 @media (max-width:700px) {
     .homeBody {
         display: grid;
@@ -40,7 +56,14 @@
         margin-bottom: 2cm;
     }
     #App {
+        margin: 0;
         margin-left: 5px;
         margin-right: 5px;
+    }
+    .button_panel {
+        display: grid;
+        grid-template-columns: 75%;
+        margin: 0px;
+        margin-bottom: 10px;
     }
 }

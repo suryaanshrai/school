@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Result, Schedule, Classroom, Notice, Member
 from home.models import Gallery, News
+from django.utils import timezone
 
 
 def login_view(request):
@@ -97,11 +98,18 @@ def check_id(request, user_id):
 
 @login_required
 def index(request):
-    schedule = list(Schedule.objects.filter(user=request.user).order_by("-due_date").values())
+    if request.user.is_employee:
+        return HttpResponseRedirect(reverse("student:staff_page"))
+    try:
+        user_classroom = Member.objects.get(member=request.user).classroom
+    except:
+        return HttpResponseRedirect(reverse("student:join_class"))
+    schedule = list(Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("-due_date").values())
     schedule = schedule[:5]
-    user_classroom = Member.objects.get(member=request.user).classroom
     notices = list(Notice.objects.filter(issued_for=user_classroom).order_by("-issue_date").values())
+    notices = notices[:3]
     results = list(Result.objects.filter(student=request.user).order_by("-date").values())
+    results = results[:3]
     return render(request, "student/index.html", {
         "schedule":schedule,
         "notices":notices,
@@ -120,7 +128,8 @@ def results(request):
 @login_required
 def schedule(request):
     user = User.objects.get(username=request.user)
-    schedule = list(Schedule.objects.filter(user=user).values())
+    min_date = timezone.now()
+    schedule = list(Schedule.objects.filter(user=user, due_date__gt=min_date).values())
     for item in schedule:
         item["due_date"] = item["due_date"].strftime("%d %b %Y at %H:%M %p")
     return JsonResponse({
@@ -164,3 +173,37 @@ def add_schedule(request):
         new_task.save()
         return HttpResponseRedirect(reverse("student:index"))
     return render(request, "student/schedule.html")
+
+@login_required
+def join_class(request):
+    if request.method == "POST":
+        if not request.user.is_employee:
+            try:
+                check_class = Member.objects.get(member=request.user)
+                return HttpResponse("A student cannot be enrolled in more than one classroom")
+            except:
+                pass
+        standard = request.POST["standard"]
+        section = request.POST["section"]
+        try:
+            classroom = Classroom.objects.get(standard=standard, section=section)
+        except:
+            return HttpResponse("Invalid Classroom")
+        if request.user.is_employee:
+            try:
+                member=Member.objects.get(member=request.user, classroom=classroom)
+                return HttpResponse("Already a member of this class")
+            except:
+                pass
+        new_member = Member(member=request.user, classroom=classroom)
+        new_member.save()
+        return HttpResponseRedirect(reverse("student:index"))
+    return render(request,"student/join_class.html")
+
+
+@login_required
+def staff_page(request):
+    if request.user.is_employee:
+        pass
+    else:
+        return HttpResponse("Invalid Access")

@@ -14,6 +14,7 @@
     {% endblock %}
     <nav id="menubar">
         <div id="logo"><a href="/"><img alt="logo" src="{% static 'home/logo.png' %}"></a></div>
+        <li>{{request.user.first_name}} {{request.user.last_name}} {{request.user.username}}</li>
         <li><a href="/#welcome">Home</a></li>
         <li><a href="/#admissions">Admissions</a></li>
         <li><a href="{% url 'home:gallery' %}">Gallery</a></li>
@@ -21,10 +22,10 @@
         <li><a href="/#aimandvalues">Aim and Values</a></li>
         <li><a href="/#history">History</a></li>
         {% if user.is_authenticated %}
-        <li><a href="{% url 'student:index' %}">Student Page</a></li>
         <li><a href="{% url 'home:submissions' %}">
             {% if user.is_employee %} Request/Review Submissions {% else %} Request Submission {% endif %}
         </a></li>
+        <li><a href="{% url 'student:index' %}">Student Page</a></li>
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
         {% else %}
         <li><a href="{% url 'student:login' %}">Login/Register</a></li>

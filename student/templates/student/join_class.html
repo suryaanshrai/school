@@ -1,0 +1,46 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    body {
+        padding: 2cm;
+        text-align: center;
+    }
+    form {
+        display: inline-block;
+        width:50%;
+        text-align: center;
+    }
+    form * {
+        margin:10px;
+    }
+    form input {
+        width: 75%;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<h2>You are not yet registered in any classroom</h2>
+<p>Please register in a classroom to continue.</p>
+<p>Note: Please be careful at this step as it is irreversible</p>
+
+<form action="{% url 'student:join_class' %}" method="post">
+    {% csrf_token %}
+    <div>
+    <input type="number" min="6" max="12" required name="standard" placeholder="Enter standard">
+    </div>
+    <div>
+    Select Section:
+    <select name="section">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    </div>
+    <div>
+    <input type="submit" value="Join Class">
+    </div>
+</form>
+
+{% endblock %}

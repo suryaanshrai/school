@@ -13,11 +13,13 @@
     {% endblock %}
     <nav id="menubar">
         <div id="logo"><a href="{% url 'home:home' %}"><img alt="logo" src="{% static 'home/logo.png' %}"></a></div>
+        <li>{{request.user.first_name}} {{request.user.last_name}} {{request.user.username}}</li>
         <li><a href="{% url 'home:home' %}">Home</a></li>
         <li><a href="{% url 'student:user_news' %}" >Your News Articles</a></li>
         <li><a href="{% url 'student:user_gallery' %}" >Your Gallery Contributions</a></li>
         <li><a href="{% url 'student:add_schedule' %}">Add to Schedule</a></li>
-        <li><a href="{% url 'student:index' %}">Student</a> </li>
+        <li> <a href="{% url 'student:join_class' %}">Join Another Class</a> </li>
+        <li><a href="{% url 'student:index' %}">Student Page</a> </li>
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
     </nav>
     <button id="sidebar"><img alt="menu" src="{% static 'home/menusymbol.svg' %}"><div>Menu</div></button>

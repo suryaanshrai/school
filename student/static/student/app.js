@@ -20,9 +20,8 @@ function Schedule(props) {
 function Notice(props) {
     return(
         <div className={props.class}>
-            <h4>{props.title}</h4>
+            <h6> <a href= {`/student/notice_page/${props.notice_id}`} target="_blank"> {props.title}</a></h6>
             <p>Dated:{props.issue_date}</p>
-            <p>{props.content}</p>
         </div>
     )
 }
@@ -75,7 +74,7 @@ function App() {
     }
     return(
         <>
-            <div>
+            <div className="button_panel">
                 <button onClick={showResults}>All Results</button>
                 <button onClick={showSchedule}>Entire Schedule</button>
                 <button onClick={showNotices}>All Notices</button>
@@ -109,7 +108,7 @@ function App() {
                     class="boxComponent"
                     title={data.title} 
                     issue_date={data.issue_date} 
-                    content={data.content}
+                    notice_id={data.id}
                 />
             ))}
             </div>
