@@ -18,7 +18,10 @@
         <li><a href="{% url 'student:user_news' %}" >Your News Articles</a></li>
         <li><a href="{% url 'student:user_gallery' %}" >Your Gallery Contributions</a></li>
         <li><a href="{% url 'student:add_schedule' %}">Add to Schedule</a></li>
+        {% if request.user.is_employee %}
+        <li><a>Release Scores</a></li>
         <li> <a href="{% url 'student:join_class' %}">Join Another Class</a> </li>
+        {% endif %}
         <li><a href="{% url 'student:index' %}">Student Page</a> </li>
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
     </nav>

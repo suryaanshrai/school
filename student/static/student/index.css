@@ -27,9 +27,11 @@
 .hide {
     display: none;
 }
+
 #App {
     margin:3cm;
 }
+
 .button_panel {
     text-align: center;
 }
@@ -41,7 +43,24 @@
     border-radius: 10px;
     background-color:aliceblue;
 }
+
 .button_panel button:hover {
+    outline:1px solid black;
+    cursor: pointer;
+}
+
+#curr_classroom {
+    text-align: right;
+    margin: 20px;
+}
+
+#curr_classroom button {
+    border:1px solid gray;
+    border-radius: 10px;
+    background-color:aliceblue;
+}
+
+#curr_classroom button:hover {
     outline:1px solid black;
     cursor: pointer;
 }

@@ -3,12 +3,33 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'student/index.css' %}">
+    {% if not request.user.is_employee %}
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
+    {% if request.user.is_employee %}
+    <div id="curr_classroom">
+        Current classroom: {{curr_class.standard}} '{{curr_class.section}}'
+        <button id="class_button">Change</button>
+        <form id="class_form" style="display: none;">
+            <select id="selected_class">
+                {% for class_room in emp_classes %}
+                <option value="{{class_room.classroom.id}}">{{class_room.classroom}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit">
+        </form>
+        <div>
+            <form action="{% url 'student:create_notice' class_id=curr_class.id %}" method="get">
+                <button type="submit">Create a Notice</button>
+            </form>
+            </div>
+    </div>
+    {% endif %}
     <div class="homeBody">
         <div>
             Due Dates/Schedule
@@ -27,6 +48,7 @@
                     {% endfor %}
                 </ul>
             </div>
+            {% if not request.user.is_employee %}
             <div>
                 Results
                 <ul>
@@ -35,8 +57,14 @@
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
         </div>
     </div>
+    {% if not request.user.is_employee %}
     <div id="App"></div>
     <script src="{% static 'student/app.js' %}" type="text/babel"></script> 
+    {% endif %}
+    {% if request.user.is_employee %}
+    <script src="{% static 'student/index.js' %}"></script>
+    {% endif %}
 {% endblock %}

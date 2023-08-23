@@ -99,12 +99,13 @@ def check_id(request, user_id):
 @login_required
 def index(request):
     if request.user.is_employee:
-        return HttpResponseRedirect(reverse("student:staff_page"))
+        class_id = Member.objects.filter(member=request.user)[0].classroom_id
+        return HttpResponseRedirect(reverse("student:staff_page", args=[class_id]))
     try:
         user_classroom = Member.objects.get(member=request.user).classroom
     except:
         return HttpResponseRedirect(reverse("student:join_class"))
-    schedule = list(Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("-due_date").values())
+    schedule = list(Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("due_date").values())
     schedule = schedule[:5]
     notices = list(Notice.objects.filter(issued_for=user_classroom).order_by("-issue_date").values())
     notices = notices[:3]
@@ -119,7 +120,7 @@ def index(request):
 @login_required
 def results(request):
     user = User.objects.get(username=request.user)
-    all_result = list(Result.objects.filter(student=user).values())
+    all_result = list(Result.objects.filter(student=user).order_by("-id").values())
     all_result.reverse()
     return JsonResponse({
         "result":all_result
@@ -129,7 +130,7 @@ def results(request):
 def schedule(request):
     user = User.objects.get(username=request.user)
     min_date = timezone.now()
-    schedule = list(Schedule.objects.filter(user=user, due_date__gt=min_date).values())
+    schedule = list(Schedule.objects.filter(user=user, due_date__gt=min_date).order_by("due_date").values())
     for item in schedule:
         item["due_date"] = item["due_date"].strftime("%d %b %Y at %H:%M %p")
     return JsonResponse({
@@ -202,8 +203,31 @@ def join_class(request):
 
 
 @login_required
-def staff_page(request):
+def staff_page(request, class_id):
     if request.user.is_employee:
-        pass
+        schedule = Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("due_date")
+        curr_class = Classroom.objects.get(id=class_id)
+        emp_classes = Member.objects.filter(member=request.user)
+        notices = Notice.objects.filter(issued_for=curr_class)
+        return render(request, "student/index.html", {
+            "schedule":schedule,
+            "notices":notices,
+            "curr_class":curr_class,
+            "emp_classes":emp_classes,
+        })
     else:
-        return HttpResponse("Invalid Access")
+        return HttpResponse("Invalid Access")   
+    
+@login_required
+def create_notice(request, class_id):
+    if request.user.is_employee:
+        if request.method == "POST":
+            new_notice = Notice(issued_for=Classroom.objects.get(id=class_id), issued_by=request.user,
+                                title=request.POST["notice_title"], content=request.POST["notice_body"])
+            new_notice.save()
+            return HttpResponseRedirect(reverse("student:staff_page", args=[class_id]))
+        else:
+            curr_class=Classroom.objects.get(id=class_id)
+            return render(request, "student/notice_create.html", {
+                "curr_class": curr_class
+            })

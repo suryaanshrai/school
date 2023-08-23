@@ -1,0 +1,35 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    body {
+        text-align: center;
+    }
+    h2 {
+        margin: 20px;
+        margin-top: 2cm;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'home/submissions.css' %}">
+{% endblock %}
+
+{% block body %}
+<h2>
+    Create a notice for class: {{curr_class}}
+</h2>
+<div class="pages" style="display: block;margin-top: 10px;">
+    <form action="{% url 'student:create_notice' class_id=curr_class.id %}" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="notice_title" placeholder="Enter the Subject" required maxlength="150"> 
+        </div>
+        <div>
+            <textarea name="notice_body" placeholder="Enter the body of the notice" required maxlength="2000"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Create">
+        </div>
+    </form>
+</div>
+{% endblock %}
