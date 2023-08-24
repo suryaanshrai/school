@@ -1,0 +1,40 @@
+{% extends 'student/layout.html' %}
+{% load static %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<h2>
+    Release Score for class: {{curr_class}}
+</h2>
+    <form action="{% url 'student:release_score' class_id=curr_class.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="input_type" value="manual">
+        Enter marks of students
+        <div>
+            <input type="text" name="topic" maxlength="150" placeholder="Title" required>
+            <input type="number" name="max_marks" id="max_m" placeholder="Max Marks" required>
+            <input type="date" name="date"> 
+        </div>
+        {% for student in students %}
+
+        {% if not student.member.is_employee %}
+        <div>
+            {{student.member}}:{{student.member.first_name}} {{student.member.last_name}}
+            <input type="number" name="s_{{student.member.id}}" class="marks" min="0" required>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <input type="submit">
+    </form>
+<script>
+    document.querySelector("#max_m").onchange = ()=>{
+        let x = document.querySelector("#max_m").value;
+        document.querySelectorAll(".marks").forEach(markin => {
+            markin.max = x;
+        })
+    }
+</script>
+{% endblock %}

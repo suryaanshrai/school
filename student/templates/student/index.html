@@ -27,7 +27,12 @@
             <form action="{% url 'student:create_notice' class_id=curr_class.id %}" method="get">
                 <button type="submit">Create a Notice</button>
             </form>
-            </div>
+        </div>
+        <div>
+            <form action="{% url 'student:release_score' class_id=curr_class.id %}" method="get">
+                <button type="submit">Release scores</button>
+            </form>
+        </div>
     </div>
     {% endif %}
     <div class="homeBody">

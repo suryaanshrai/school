@@ -120,7 +120,7 @@ def index(request):
 @login_required
 def results(request):
     user = User.objects.get(username=request.user)
-    all_result = list(Result.objects.filter(student=user).order_by("-id").values())
+    all_result = list(Result.objects.filter(student=user).order_by("date").values())
     all_result.reverse()
     return JsonResponse({
         "result":all_result
@@ -226,8 +226,35 @@ def create_notice(request, class_id):
                                 title=request.POST["notice_title"], content=request.POST["notice_body"])
             new_notice.save()
             return HttpResponseRedirect(reverse("student:staff_page", args=[class_id]))
-        else:
+        elif request.method == "GET":
             curr_class=Classroom.objects.get(id=class_id)
             return render(request, "student/notice_create.html", {
                 "curr_class": curr_class
+            })
+        
+@login_required
+def release_score(request, class_id):
+    if request.user.is_employee:
+        if request.method == "POST":
+            curr_class = Classroom.objects.get(id=class_id)
+            students = Member.objects.filter(classroom=curr_class)
+            max_marks = request.POST["max_marks"]
+            date = request.POST["date"]
+            topic = request.POST["topic"]
+            if request.POST["input_type"] == "manual":
+                for student in students:
+                    if not student.member.is_employee:
+                        s_marks = request.POST["s_"+str(student.member.id)]
+                        if s_marks is not None:
+                            new_result = Result(student=student.member,topic=topic, marks=s_marks, max_marks=max_marks, date=date)
+                            new_result.save()                        
+            elif request.POST["input_type"] == "file":
+                pass
+            return HttpResponseRedirect(reverse('student:staff_page', args=[class_id]))
+        elif request.method == "GET":
+            curr_class = Classroom.objects.get(id=class_id)
+            students = Member.objects.filter(classroom=curr_class)
+            return render(request, "student/score_release.html", {
+                "curr_class":curr_class,
+                "students":students,
             })

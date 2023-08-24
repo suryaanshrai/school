@@ -58,6 +58,7 @@
     border:1px solid gray;
     border-radius: 10px;
     background-color:aliceblue;
+    margin: 3px;
 }
 
 #curr_classroom button:hover {
