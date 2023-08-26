@@ -137,7 +137,6 @@ def valid_image(image):
 
 def handle_news(request):
     """Handles news article request"""
-    print("something happened")
     title = request.POST["title"]
     date = request.POST["date"]
     description=request.POST["description"]

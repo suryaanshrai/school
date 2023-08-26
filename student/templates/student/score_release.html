@@ -2,14 +2,61 @@
 {% load static %}
 
 {% block head %}
-
+<style>
+    body {
+        text-align: center;
+    }
+    form {
+        margin:10px;
+    }
+    input {
+        margin: 10px;
+    }
+    h2 {
+        margin: .75cm;
+        margin-top: 2.25cm;
+    }
+    button {
+        border: 1px solid black;
+        border-radius: 10px;
+        background-color: beige;
+    }
+    button:hover {
+        cursor: pointer;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: 50% 10%;
+    }
+    .grid * {
+        display: inline-block;
+        text-align: right;
+    }
+    p {
+        margin: 10px;
+    }
+    @media (max-width:700px) {
+        .grid {
+            grid-template-columns: 50%;
+            text-align: center;
+        }
+        .grid * {
+            text-align: center  ;
+        }
+        p {
+            margin: 2px;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block body %}
 <h2>
-    Release Score for class: {{curr_class}}
+    Release Scores for class: {{curr_class}}
 </h2>
-    <form action="{% url 'student:release_score' class_id=curr_class.id %}" method="post">
+    <button id="manual_form_button">Enter marks of each student</button>
+    <button id="file_form_button">Upload csv File</button>
+    <form id="manual_form" action="{% url 'student:release_score' class_id=curr_class.id %}" method="post" style="display: none;">
         {% csrf_token %}
         <input type="hidden" name="input_type" value="manual">
         Enter marks of students
@@ -21,12 +68,26 @@
         {% for student in students %}
 
         {% if not student.member.is_employee %}
-        <div>
-            {{student.member}}:{{student.member.first_name}} {{student.member.last_name}}
+        <div class="grid">
+            <p>
+                {{student.member}}:{{student.member.first_name}} {{student.member.last_name}}
+            </p>
             <input type="number" name="s_{{student.member.id}}" class="marks" min="0" required>
         </div>
         {% endif %}
         {% endfor %}
+        <input type="submit">
+    </form>
+    <form id="file_form" action="{% url 'student:release_score' class_id=curr_class.id %}"  enctype="multipart/form-data"
+         method="post" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="input_type" value="file">
+        <div>
+            <input type="text" name="topic" maxlength="150" placeholder="Title" required>
+            <input type="number" name="max_marks" id="max_m" placeholder="Max Marks" required>
+            <input type="date" name="date"> 
+        </div>
+        Upload csv file: <input type="file" name="data_file" required>
         <input type="submit">
     </form>
 <script>
@@ -35,6 +96,14 @@
         document.querySelectorAll(".marks").forEach(markin => {
             markin.max = x;
         })
+    }
+    document.querySelector("#file_form_button").onclick = () => {
+        document.querySelector("#manual_form").style.display = "none";
+        document.querySelector("#file_form").style.display = "block";
+    }
+    document.querySelector("#manual_form_button").onclick = () => {
+        document.querySelector("#file_form").style.display = "none";
+        document.querySelector("#manual_form").style.display = "block";
     }
 </script>
 {% endblock %}

@@ -7,7 +7,7 @@ from django.urls import reverse
 from .models import User, Result, Schedule, Classroom, Notice, Member
 from home.models import Gallery, News
 from django.utils import timezone
-
+import csv
 
 def login_view(request):
     if request.method == "POST":
@@ -99,6 +99,8 @@ def check_id(request, user_id):
 @login_required
 def index(request):
     if request.user.is_employee:
+        if len(Member.objects.filter(member=request.user)) == 0:
+            return HttpResponseRedirect(reverse("student:join_class"))
         class_id = Member.objects.filter(member=request.user)[0].classroom_id
         return HttpResponseRedirect(reverse("student:staff_page", args=[class_id]))
     try:
@@ -107,9 +109,9 @@ def index(request):
         return HttpResponseRedirect(reverse("student:join_class"))
     schedule = list(Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("due_date").values())
     schedule = schedule[:5]
-    notices = list(Notice.objects.filter(issued_for=user_classroom).order_by("-issue_date").values())
+    notices = list(Notice.objects.filter(issued_for=user_classroom).order_by("-id").values())
     notices = notices[:3]
-    results = list(Result.objects.filter(student=request.user).order_by("-date").values())
+    results = list(Result.objects.filter(student=request.user).order_by("-id").values())
     results = results[:3]
     return render(request, "student/index.html", {
         "schedule":schedule,
@@ -207,8 +209,8 @@ def staff_page(request, class_id):
     if request.user.is_employee:
         schedule = Schedule.objects.filter(user=request.user, due_date__gt=timezone.now()).order_by("due_date")
         curr_class = Classroom.objects.get(id=class_id)
-        emp_classes = Member.objects.filter(member=request.user)
-        notices = Notice.objects.filter(issued_for=curr_class)
+        emp_classes = Member.objects.filter(member=request.user).order_by("id")
+        notices = Notice.objects.filter(issued_for=curr_class).order_by('-id')
         return render(request, "student/index.html", {
             "schedule":schedule,
             "notices":notices,
@@ -249,7 +251,22 @@ def release_score(request, class_id):
                             new_result = Result(student=student.member,topic=topic, marks=s_marks, max_marks=max_marks, date=date)
                             new_result.save()                        
             elif request.POST["input_type"] == "file":
-                pass
+                if 'data_file' in request.FILES:
+                    data_file = request.FILES["data_file"]
+                    decoded_file=data_file.read().decode('utf-8-sig').splitlines()
+                    reader = csv.DictReader(decoded_file)
+                    topic = request.POST["topic"]
+                    max_marks = request.POST["max_marks"]
+                    date = request.POST["date"]
+                    for row in reader:
+                        student = User.objects.get(username=row["id"])
+                        if student not in students:
+                            continue
+                        marks = row["marks"]
+                        new_result=Result(student=student, topic=topic, marks=marks, max_marks=max_marks, date=date)
+                        new_result.save()
+                else:
+                    return HttpResponse("Invalid File Upload")
             return HttpResponseRedirect(reverse('student:staff_page', args=[class_id]))
         elif request.method == "GET":
             curr_class = Classroom.objects.get(id=class_id)
