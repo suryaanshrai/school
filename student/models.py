@@ -17,12 +17,18 @@ class Result(models.Model):
     max_marks = models.IntegerField()
     date = models.DateField()
     is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.student} scored {self.marks}/{self.max_marks} in {self.topic}"
 
 
 class Schedule(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     activity = models.CharField(max_length=150)
     due_date = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.activity}"
 
 
 def validate_section(value):
@@ -46,6 +52,9 @@ class Classroom(models.Model):
 class Member(models.Model):
     member = models.ForeignKey(User, on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.member} in {self.classroom}"
 
 class Notice(models.Model):
     issued_for = models.ForeignKey(Classroom, on_delete=models.CASCADE)

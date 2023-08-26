@@ -33,6 +33,11 @@
                 <button type="submit">Release scores</button>
             </form>
         </div>
+        <div>
+            <form action="{% url 'student:add_schedule_class' class_id=curr_class.id %}" method="get">
+                <button type="submit">Add to schedule of class</button>
+            </form>
+        </div>
     </div>
     {% endif %}
     <div class="homeBody">

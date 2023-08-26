@@ -275,3 +275,21 @@ def release_score(request, class_id):
                 "curr_class":curr_class,
                 "students":students,
             })
+        
+@login_required
+def add_schedule_class(request,class_id):
+    if request.user.is_employee:
+        if request.method == "POST":
+            classroom = Classroom.objects.get(id=class_id)
+            students = Member.objects.filter(classroom=classroom)
+            for student in students:
+                new_schedule = Schedule(user=student.member, activity=request.POST["task"], due_date=request.POST["due_date"])
+                new_schedule.save()
+            return HttpResponseRedirect(reverse("student:index"))
+        elif request.method == "GET":
+            classroom = Classroom.objects.get(id=class_id)
+            return render(request, "student/schedule_class.html", {
+                "class":classroom
+            })
+    else:
+        return HttpResponse("Invalid Access")

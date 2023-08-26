@@ -21,4 +21,5 @@ urlpatterns = [
     path("staff_page/<int:class_id>", views.staff_page, name="staff_page"),
     path("create_notice/<int:class_id>", views.create_notice, name="create_notice"),
     path("release_score/<int:class_id>", views.release_score, name="release_score"),
+    path("add_schedule_class/<int:class_id>", views.add_schedule_class, name="add_schedule_class"),
 ]
