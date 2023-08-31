@@ -18,17 +18,12 @@ class Issue(models.Model):
     def __str__(self):
         return f"{self.user} issued {self.book} due on {self.due_date}"
 
-class Request(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bookname = models.CharField(max_length=150)
-    reason = models.TextField(max_length=500)
-
-    def __str__(self):
-        return f"{self.user} requested {self.bookname}"
-
 class Penalty(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    due_date = models.DateField()
+    date_of_return = models.DateField(default=date.today())
 
     def __str__(self):
         return f"{self.amount} on {self.user}"

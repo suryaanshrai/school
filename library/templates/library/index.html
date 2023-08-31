@@ -18,8 +18,45 @@
         <div id="searchResults"></div>
     </div>
     {% if isLibrarian %}
-    Librarian
+    <button>Issue/return a book</button>
+    <button>clear penalty</button>
+    <button>Add a book</button>
+
+    <!-- Issue or return a book -->
+    <form action="{% url 'library:issue' %}" method="post">
+        Issue or return a book
+        {% csrf_token %}
+        <input type="text" name="student_id" required placeholder="Student ID">
+        <input type="text" name="book_id" required placeholder="Book ID">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Takes to a page where the total penalty of the student is displayed -->
+    <form action="{% url 'library:penaltyform' %}" method="post">
+        Check or clear a student's penalties
+        {% csrf_token %}
+        <input type="text" name="student_id" required placeholder="Student ID">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Adds a book to the library -->
+    <form action="{% url 'library:add_book' %}" method="post">
+        Add a book to the library
+        {% csrf_token %}
+        <input type="text" name="book_name" required placeholder="Book Name">
+        <input type="text" name="author_name" required placeholder="Author Name">
+        <input type="number" name="quantity" required min="1" placeholder="Quantity">
+        <button type="submit">Submit</button>
+    </form>
+    <form action="{% url 'library:add_book_csv' %}" enctype="multipart/form-data" method="post">
+        Upload a CSV file that contains the following columns: book_name, author_name, quantity
+        {% csrf_token %}
+        <input type="file" name="book_list" required>
+        <button type="submit">Submit</button>
+    </form>
+
     {% else %}
+    <h3>Books issued to you:</h3>
     <table>
         <thead>
             <th>Book Name</th>
@@ -34,6 +71,15 @@
             {% endfor %}
         </tbody>
     </table>
+        {% if total_penalty != 0 %}
+        <h3>Penalties for late submission</h3>
+        {% for penalty in penalties %}
+        <p>Rs. {{penalty.amount}} because {{penalty.book.name}} was returned on {{penalty.date_of_return}} which was due on {{penalty.due_date}}.</p>
+        {% endfor %}
+        <p>Total Penalty: Rs. {{total_penalty}}</p>
+        {% endif %}
     {% endif %}
+    <a href="{% url 'home:home' %}"><button>Homepage</button></a>
+    <a href="{% url 'student:index' %}"><button>Student Page</button></a>
     <script src="{% static 'library/script.js' %}"></script>
 </body>

@@ -11,13 +11,13 @@ document.querySelector("#searchbar").onkeyup = () => {
                     if (element["quantity"] != 0) {
                         // console.log(`${element["name"]} by ${element["author"]}: Available :D`)
                         let option=document.createElement("p");
-                        option.innerHTML = `${element["name"]} by ${element["author"]}: Available :D`;
+                        option.innerHTML = `${element["id"]} - ${element["name"]} by ${element["author"]}: Available :D`;
                         searchbox.append(option);
                     }
                     else {
                         // console.log(`${element["name"]} by ${element["author"]}: Currentlu Unavailble :(`)
                         let option=document.createElement("p");
-                        option.innerHTML = `${element["name"]} by ${element["author"]}: Unavailable :(`;
+                        option.innerHTML = `${element["id"]} - ${element["name"]} by ${element["author"]}: Unavailable :(`;
                         searchbox.append(option);
                     }
                 });
@@ -40,3 +40,4 @@ document.querySelector("#searchbar").onkeyup = () => {
         document.querySelector("#searchResults").innerHTML = "";
     }
 }
+
