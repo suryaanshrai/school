@@ -26,6 +26,7 @@
             {% if user.is_employee %} Request/Review Submissions {% else %} Request Submission {% endif %}
         </a></li>
         <li><a href="{% url 'student:index' %}">Student Page</a></li>
+        <li><a href="{% url 'library:index' %}">Library</a> </li>
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
         {% else %}
         <li><a href="{% url 'student:login' %}">Login/Register</a></li>

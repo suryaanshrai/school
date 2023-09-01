@@ -41,3 +41,36 @@ document.querySelector("#searchbar").onkeyup = () => {
     }
 }
 
+
+document.querySelectorAll(".noReturnForm").forEach(form => {
+    form.onsubmit = () => {
+        fetch(form.action, {
+            method:'POST',
+            body: new FormData(form),
+        })
+        .then(response => response.json())
+        .then(data => {
+            form.querySelectorAll('input').forEach(input=> {
+                if (input.type != "hidden") {
+                    input.value = "";
+                }
+            });
+            let message = document.querySelector("#message");
+            message.classList.add('slideinanim','alert','alert-primary')
+            message.innerHTML = data["message"];
+            setTimeout(()=> {
+                message.classList.remove('slideinanim','alert','alert-primary');
+                message.innerHTML = "";
+            }, 5000)
+        })
+        return false;
+    }
+});
+
+document.querySelectorAll('.dispButton').forEach(button=> {
+    button.onclick = () => {
+        document.querySelectorAll('.pages').forEach(page=>page.style.display="none");
+        document.querySelector(`#${button.value}`).style.display = "block";  
+        document.querySelector(`#${button.value}`).classList.add("slideinanim")
+    }
+})

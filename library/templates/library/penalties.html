@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>
-    <h3>Penalties for {{user}}</h3>
+<body style="text-align: center;">
+    <h3 id="header">Penalties for {{user}}</h3>
     <table>
         <thead>
             <th>Book Name</th>
@@ -36,5 +36,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'library:index' %}"><button>Go back</button></a>
+    <div>
+        <a href="{% url 'library:index' %}"><button>Go back</button></a>
+    </div>
 </body>

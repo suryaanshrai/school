@@ -22,6 +22,7 @@
         <li> <a href="{% url 'student:join_class' %}">Join Another Class</a> </li>
         {% endif %}
         <li><a href="{% url 'student:index' %}">Student Page</a> </li>
+        <li><a href="{% url 'library:index' %}">Library</a> </li>
         <li><a href="{% url 'student:logout' %}">Logout</a></li>
     </nav>
     <button id="sidebar"><img alt="menu" src="{% static 'home/menusymbol.svg' %}"><div>Menu</div></button>
