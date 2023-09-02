@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from student.models import User
+from student.models import User, Member, Notice
 from .models import News,Event,Gallery
 from django.utils import dateparse
 from datetime import datetime
@@ -184,3 +184,24 @@ def handle_event(request):
         return HttpResponseRedirect(reverse('home:sub_message', args=["Date of event cannot be in the future!"]))
     Event(event_name=event_name,date=event_date, active=True).save()
     return HttpResponseRedirect(reverse('home:sub_message', args=["Event saved successfully"]))
+
+
+@login_required
+def newAcademicSession(request):
+    s = User.objects.get(username=request.user).username
+    if s == "librarian":
+        if request.method == "POST":
+            Member.objects.all().delete()
+            Notice.objects.all().delete()
+            for event in Event.objects.all():
+                event.active = False
+                event.save()
+            for news in News.objects.all():
+                news.active = False
+                news.save()
+            return HttpResponseRedirect(reverse('home:home'))
+        elif request.method == "GET":
+            return render(request,"home/newAcademicSession.html")
+        else:
+            return HttpResponse("Invalid Request")
+    

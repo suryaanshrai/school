@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        body {
+            text-align: center;
+        }
+        ul {
+            display: inline-block;
+        }
+        li {
+            text-align: left;
+        }
+        #listDiv {
+            text-align: center;
+        }
+        #buttonPanel > div {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Start a new academic session</h1>
+    This will:
+    <div id="listDiv">
+        <ul>
+            <li>Deallocate the classrooms of every member</li>
+            <li>Delete all notices</li>
+            <li>Archive all the data in the gallery and news sections</li>
+        </ul>
+    </div>
+    <p>Are you sure you want to continue?</p>
+    <div id="buttonPanel">
+        <div>
+            <form action="{% url 'home:newAcademicSession' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Yes</button>
+            </form>
+        </div>
+        <div>
+            <a href="{% url 'home:home' %}"><button>No</button></a>
+        </div>
+    </div>
+</body>

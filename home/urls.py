@@ -12,4 +12,5 @@ urlpatterns = [
     path("submissions/", views.submissions, name="submissions"),
     path("submissions/<str:message>", views.sub_message, name="sub_message"),
     path("approve/", views.approve, name="approve"),
+    path("startnewacademicsession", views.newAcademicSession, name="newAcademicSession"),
 ]
