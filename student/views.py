@@ -260,10 +260,10 @@ def release_score(request, class_id):
                     date = request.POST["date"]
                     for row in reader:
                         student = User.objects.get(username=row["id"])
-                        if student not in students:
-                            continue
+                        print(student)
                         marks = row["marks"]
                         new_result=Result(student=student, topic=topic, marks=marks, max_marks=max_marks, date=date)
+                        print("foo")
                         new_result.save()
                 else:
                     return HttpResponse("Invalid File Upload")

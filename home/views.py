@@ -189,7 +189,7 @@ def handle_event(request):
 @login_required
 def newAcademicSession(request):
     s = User.objects.get(username=request.user).username
-    if s == "librarian":
+    if s == "master":
         if request.method == "POST":
             Member.objects.all().delete()
             Notice.objects.all().delete()
@@ -199,9 +199,12 @@ def newAcademicSession(request):
             for news in News.objects.all():
                 news.active = False
                 news.save()
+            
             return HttpResponseRedirect(reverse('home:home'))
         elif request.method == "GET":
             return render(request,"home/newAcademicSession.html")
         else:
             return HttpResponse("Invalid Request")
+    else:
+        return HttpResponse("Access Denied")
     

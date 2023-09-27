@@ -148,8 +148,8 @@ function check_email(email) {
         })
         .then(response=>response.json())
         .then(data=> {
-            // console.log(data);
-            if (data.valid) {
+            console.log(data);
+            if (data.text == "Looks okay") {
                 document.querySelector("#message").innerHTML = "";
                 cond4 = true;
             }

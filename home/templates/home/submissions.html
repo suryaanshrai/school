@@ -144,8 +144,8 @@
         <form action="{% url 'home:submissions' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="sub_type" value="event">
-            <p><input type="text" name="event_name" maxlength="150" placeholder="Event Name"></p>
-            <p><input type="date" name="event_date"></p>
+            <p><input type="text" name="event_name" maxlength="150" placeholder="Event Name" required></p>
+            <p><input type="date" name="event_date" required></p>
             <p><input type="submit"> </p>
         </form>
     </div>

@@ -1,5 +1,7 @@
 # school
-Video presentation: TODO
+Video presentation with voice over: https://youtu.be/06H9vf2SrDc?si=0lPtWYGmP0leXSZY
+
+Video presentation for CS50 submission: https://youtu.be/XZ5SIozA9gQ?si=ai5HH2aahAWorQp0
 
 This document contains the following sections: 
 - [Overview](#overview)
@@ -18,12 +20,14 @@ The project is clearly different from any other project of the course, both in i
 
 Here is a more detailed explaination of the project's applications and features:
 
-The project's name (given by the django-admin command) is capstone2. It contains three applications, with the following features:
+The project's name (given through the django-admin command) is capstone2. It contains three applications, with the following features:
+
 - home
     - Manages the homepage and users who are not registered with the school.
     - Allows logged in students to request addition of a news article or image in the school website.
     - Allows employees to approve or reject such submission requests made by students.
     - Allows the 'master' user to start a new academic session. Starting a new academic session archives all the news articles and images, deallocates everyone from the classrooms and deletes all the notices issued by the teachers.
+
 - student
     - Displays test/assignment scores to student
     - Displays notices published for a classroom
@@ -31,7 +35,7 @@ The project's name (given by the django-admin command) is capstone2. It contains
     - An employee can assign tasks to an entire classroom as via adding it to the classroom's schedule
     - An employee can release test score of a classroom by either manually entering it for the entire class or uploading a csv file.
     - An employee can add a notice for a classroom
-    - An employee can 
+
 - library
     - Displays the books issued with their due date of return and penalties accrued (if any) to the user.
     - Allows user to search for a book or author and also see its availibility
@@ -56,7 +60,7 @@ All the images that are uploaded in the news and gallery section are stored in `
 #### Usernames and passwords
 The following student and teacher accounts contains some default values in them
 - S_1003: WordPass@123
-- E_110: WordPass@123
+- E_101: WordPass@123
 - librarian:Qwerty@123
 - master: password
 
@@ -80,6 +84,6 @@ There are privileges given to certain users. These privileges and restrictions a
 
 - Non-logged in users: These users can only view the homepage, gallery, and news section.
 - Logged in users who are students: These users can make submissions for gallery and news sections, open their classroom or check the library.
-- Logged in users who teachers: These users can review the submission made by the users, access a classroom, issue a notice for them or add anything to their schedule.
+- Logged in users who are teachers: These users can review the submission made by the users, access a classroom, issue a notice for them or add anything to their schedule.
 - Logged in user who is `librarian`: This user can issue/return books from students, add books to the library, clear penalty if any on a student.
 - Logged in user who is `master`: The `master` user can restart the academic session.
