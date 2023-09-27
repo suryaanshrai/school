@@ -98,7 +98,7 @@ def issue(request):
 def penalty(request, username):
     if request.method == "POST":
         s = User.objects.get(username=request.user).username
-        if s == "librarian":
+        if s == "master":
             penalty = Penalty.objects.get(id=request.POST["penalty_id"])
             penalty.delete()
             return HttpResponseRedirect(reverse('library:penalty', args=[username]))
